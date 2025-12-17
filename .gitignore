@@ -5,3 +5,4 @@
 *.pdf
 cache/
 settings.py
+*.html
