@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>链家租房数据分析</title>
+    <meta name="description" content="基于北京、上海、广州、深圳、杭州11万+真实房源数据，全方位分析租赁市场规律">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+    <!-- Smooth Scroll -->
+    <style>
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <ul class="nav-menu">
+                <li><a href="#overview">数据概览</a></li>
+                <li><a href="#city">城市对比</a></li>
+                <li><a href="#layout">户型分析</a></li>
+                <li><a href="#block">板块热度</a></li>
+                <li><a href="#orientation">朝向溢价</a></li>
+                <li><a href="#brand">品牌分布</a></li>
+                <li><a href="#salary">工资租金</a></li>
+                <li><a href="#distance">距离衰减</a></li>
+                <li><a href="#amenity">周边设施</a></li>
+                <li><a href="#heatmap">热力地图</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">五城市租房数据分析报告</h1>
+                <p class="hero-subtitle">基于北京、上海、广州、深圳、杭州 <strong>114,630条</strong> 真实房源数据 作者：Yokumi(张珂铭)</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="total-listings">114,630</div>
+                        <div class="stat-label">房源数量</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">5</div>
+                        <div class="stat-label">重点城市</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">11</div>
+                        <div class="stat-label">分析维度</div>
+                    </div>
+                </div>
+                <a href="#overview" class="cta-button">查看分析结果</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 数据概览 -->
+    <section id="overview" class="section">
+        <div class="container">
+            <h2 class="section-title">📊 数据概览</h2>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <h3>数据来源</h3>
+                    <p>链家网站（2025年12月数据快照）</p>
+                    <div class="overview-detail">
+                        <span>原始数据：121,993 条</span>
+                        <span>清洗后：114,630 条</span>
+                    </div>
+                </div>
+                <div class="overview-card">
+                    <h3>覆盖城市</h3>
+                    <ul class="city-list">
+                        <li>北京：28,926 条</li>
+                        <li>上海：21,796 条</li>
+                        <li>广州：24,099 条</li>
+                        <li>深圳：14,404 条</li>
+                        <li>杭州：25,405 条</li>
+                    </ul>
+                </div>
+                <div class="overview-card">
+                    <h3>分析维度</h3>
+                    <ul class="analysis-list">
+                        <li>城市租金对比</li>
+                        <li>户型价格差异</li>
+                        <li>板块热度分布</li>
+                        <li>朝向溢价分析</li>
+                        <li>品牌市场占有率</li>
+                        <li>工资租金关系</li>
+                        <li>距离衰减规律</li>
+                        <li>周边设施溢价</li>
+                        <li>空间热力分布</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 城市对比分析 -->
+    <section id="city" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">🏙️ 城市对比分析</h2>
+            <p class="section-subtitle">五城市租金水平差异、总租金 vs 单位租金梯队</p>
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3 class="chart-title">总租金分布</h3>
+                    <div id="chart-city-rent" class="chart-container"></div>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">单位租金对比</h3>
+                    <div id="chart-city-price-per-m2" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 户型分析 -->
+    <section id="layout" class="section">
+        <div class="container">
+            <h2 class="section-title">🏠 户型分析</h2>
+            <p class="section-subtitle">一居/两居/三居的价格差异、蜗居效应（小户型单位租金高）</p>
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3 class="chart-title">各城市户型总租金对比</h3>
+                    <div id="chart-layout-rent" class="chart-container"></div>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">各城市户型单位租金对比</h3>
+                    <div id="chart-layout-price-per-m2" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 板块热度分析 -->
+    <section id="block" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">📍 板块热度分析</h2>
+            <p class="section-subtitle">各城市内部哪些板块租金最高？哪些性价比高？</p>
+            <div class="city-selector">
+                <button class="city-btn active" data-city="北京">北京</button>
+                <button class="city-btn" data-city="上海">上海</button>
+                <button class="city-btn" data-city="广州">广州</button>
+                <button class="city-btn" data-city="深圳">深圳</button>
+                <button class="city-btn" data-city="杭州">杭州</button>
+            </div>
+            <div class="chart-card">
+                <h3 class="chart-title" id="block-chart-title">北京 TOP10 热门板块</h3>
+                <div id="chart-block" class="chart-container-large"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 朝向溢价分析 -->
+    <section id="orientation" class="section">
+        <div class="container">
+            <h2 class="section-title">🧭 朝向溢价分析</h2>
+            <p class="section-subtitle">不同朝向的租金差异</p>
+            <div class="chart-card">
+                <h3 class="chart-title">各城市朝向单位租金对比</h3>
+                <div id="chart-orientation" class="chart-container-large"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 品牌分布分析 -->
+    <section id="brand" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">🏢 品牌分布分析</h2>
+            <p class="section-subtitle">链家 vs 贝壳优选 vs 个人房源的市场占有率</p>
+            <div class="chart-card">
+                <h3 class="chart-title">各城市品牌市场份额</h3>
+                <div id="chart-brand" class="chart-container-large"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 工资-租金关系 -->
+    <section id="salary" class="section">
+        <div class="container">
+            <h2 class="section-title">💰 工资-租金关系分析</h2>
+            <p class="section-subtitle">租房负担能力，哪个城市租房压力最大？</p>
+            <div class="chart-grid">
+                <div class="chart-card">
+                    <h3 class="chart-title">工资 vs 单位租金相关性</h3>
+                    <div id="chart-salary-scatter" class="chart-container"></div>
+                </div>
+                <div class="chart-card">
+                    <h3 class="chart-title">租房自由度（30%工资可租面积）</h3>
+                    <div id="chart-affordable-area" class="chart-container"></div>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3 class="chart-title">租金收入比（总租金/私营月薪）</h3>
+                <div id="chart-rent-to-income" class="chart-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 距离衰减分析 -->
+    <section id="distance" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">🚇 距离衰减分析</h2>
+            <p class="section-subtitle">距离就业中心越远租金越低？衰减规律如何？</p>
+            <div class="city-selector">
+                <button class="city-btn-distance active" data-city="北京">北京</button>
+                <button class="city-btn-distance" data-city="上海">上海</button>
+                <button class="city-btn-distance" data-city="广州">广州</button>
+                <button class="city-btn-distance" data-city="深圳">深圳</button>
+                <button class="city-btn-distance" data-city="杭州">杭州</button>
+            </div>
+            <div class="chart-card">
+                <h3 class="chart-title" id="distance-chart-title">北京 租金-距离衰减曲线</h3>
+                <div id="chart-distance-decay" class="chart-container-large"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 周边设施溢价分析 -->
+    <section id="amenity" class="section">
+        <div class="container">
+            <h2 class="section-title">☕ 周边设施溢价分析</h2>
+            <p class="section-subtitle">星巴克/麦当劳密度对租金的影响</p>
+            <div class="city-selector">
+                <button class="city-btn-amenity active" data-city="北京">北京</button>
+                <button class="city-btn-amenity" data-city="上海">上海</button>
+                <button class="city-btn-amenity" data-city="广州">广州</button>
+                <button class="city-btn-amenity" data-city="深圳">深圳</button>
+                <button class="city-btn-amenity" data-city="杭州">杭州</button>
+            </div>
+            <div class="chart-card">
+                <h3 class="chart-title" id="amenity-chart-title">北京 配套设施密度与租金关系</h3>
+                <div id="chart-amenity-density" class="chart-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 城市热力图 -->
+    <section id="heatmap" class="section section-alt">
+        <div class="container">
+            <h2 class="section-title">🗺️ 城市租金热力图</h2>
+            <p class="section-subtitle">交互式地图展示房源空间分布与租金热度</p>
+            <div class="city-selector">
+                <button class="city-btn-heatmap active" data-city="北京">北京</button>
+                <button class="city-btn-heatmap" data-city="上海">上海</button>
+                <button class="city-btn-heatmap" data-city="广州">广州</button>
+                <button class="city-btn-heatmap" data-city="深圳">深圳</button>
+                <button class="city-btn-heatmap" data-city="杭州">杭州</button>
+            </div>
+            <div class="chart-card">
+                <h3 class="chart-title" id="heatmap-chart-title">北京租金热力图</h3>
+                <iframe id="heatmap-iframe" src="maps/bj_rental_heatmap.html"
+                        style="width: 100%; height: 600px; border: 1px solid #e1e4e8; border-radius: 8px;">
+                </iframe>
+                <div class="chart-insight">
+                    <strong>使用提示：</strong>可缩放、拖动地图查看详情，颜色越深表示租金越高
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>关于项目</h3>
+                    <p>本项目基于链家网站2025年12月的真实房源数据，经过数据清洗、分析与可视化，全方位展示五城市租赁市场特征。</p>
+                </div>
+                <div class="footer-section">
+                    <h3>特别说明</h3>
+                    <ul>
+                        <li>遵循学术诚信，代码和数据集不公开，仅部署静态网页方便查看和评阅</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy Yokumi(张珂铭); 2025 链家租房数据分析 | 数据来源：链家网 | 最后更新：2025-12-17</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="back-to-top" title="返回顶部">↑</button>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
