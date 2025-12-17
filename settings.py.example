@@ -1,0 +1,96 @@
+# ============ 【重要】用户配置区域 ============
+
+# 1. Cookie（必填）
+Cookie = ""  # 👈 请在这里粘贴你的 Cookie
+
+
+# 2. User-Agent（可选，默认已配置）
+USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36"
+
+
+# 3. 请求延迟（秒）
+# 用于避免被反爬，建议 1-3 秒之间
+DOWNLOAD_DELAY = 1.5
+
+
+# 4. 重试次数
+MAX_RETRIES = 3
+
+
+# ============ XPath 选择器配置 ============
+# 租房页面选择器
+RENTAL_SELECTORS = {
+    'house_list': '//*[@id="content"]/div/div[@class="list-item"]',
+    'name': './/p[@class="title"]/a/text()',
+    'price': './/span[@class="price"]/em/text()',
+    'district': './/p[@class="des"]/a[1]/text()',
+    'street': './/p[@class="des"]/a[2]/text()',
+    'community': './/p[@class="des"]/a[3]/text()',
+    'layout': './/p[@class="des"]/text()[1]',
+    'square': './/p[@class="des"]/text()[2]',
+    'direction': './/p[@class="des"]/text()[3]',
+}
+
+# 二手房页面选择器
+SECONDHAND_SELECTORS = {
+    'house_list': '//*[@id="content"]/div[1]/div[1]/div',
+    'name': './div/p[1]/a/text()',
+    'price': './div/span/em/text()',
+    'district': './div/p[2]/a[1]/text()',
+    'street': './div/p[2]/a[2]/text()',
+    'community': './div/p[2]/a[3]/text()',
+    'layout': './div/p[3]/text()[1]',
+    'square': './div/p[3]/text()[2]',
+    'direction': './div/p[3]/text()[3]',
+}
+
+
+# ============ 城市和 URL 配置 ============
+
+CITIES = {
+    'bj': {
+        'name': '北京',
+        'code': '110000',
+        'rental_url': 'https://bj.lianjia.com/zufang/',
+        'secondhand_url': 'https://bj.lianjia.com/ershoufang/',
+    },
+    'sh': {
+        'name': '上海',
+        'code': '310000',
+        'rental_url': 'https://sh.lianjia.com/zufang/',
+        'secondhand_url': 'https://sh.lianjia.com/ershoufang/',
+    },
+    'sz': {
+        'name': '深圳',
+        'code': '440300',
+        'rental_url': 'https://sz.lianjia.com/zufang/',
+        'secondhand_url': 'https://sz.lianjia.com/ershoufang/',
+    },
+    'gz': {
+        'name': '广州',
+        'code': '440100',
+        'rental_url': 'https://gz.lianjia.com/zufang/',
+        'secondhand_url': 'https://gz.lianjia.com/ershoufang/',
+    },
+    'hz': {
+        'name': '杭州',
+        'code': '330100',
+        'rental_url': 'https://hz.lianjia.com/zufang/',
+        'secondhand_url': 'https://hz.lianjia.com/ershoufang/',
+    },
+}
+
+
+# ============ 项目配置 ============
+
+# 输出目录
+DATA_DIR = 'data'
+
+# 进度文件后缀
+PROGRESS_FILE_SUFFIX = '_progress.json'
+
+# 日志级别
+LOG_LEVEL = 'INFO'
+
+# 是否使用代理（可选）
+PROXY = None  # 例如：'http://proxy.example.com:8080'
