@@ -1,0 +1,7 @@
+**/docs/*
+**/docs/template/*
+!**/docs/template/
+!**/docs/template/report.typ
+*.pdf
+cache/
+settings.py
